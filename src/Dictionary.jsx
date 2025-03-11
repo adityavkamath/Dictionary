@@ -3,18 +3,23 @@ import React, { useEffect, useState } from "react";
 
 const Dictionary = () => {
   const [word, setWord] = useState("");
+  const [searchWord, setSearchWord] = useState("");
   const [result, setResult] = useState([]);
 
   useEffect(() => {
-    if (word.trim() !== "") {
+    if (searchWord.trim() !== "") {
       axios
-        .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
+        .get(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchWord}`)
         .then((res) => setResult(res.data[0].meanings))
         .catch((error) => console.error("Error fetching data:", error));
     } else {
       setResult([]);
     }
-  }, [word]);
+  }, [searchWord]);
+
+  const handleSearch = () => {
+    setSearchWord(word);
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-950 to-gray-900 text-white">
@@ -32,7 +37,10 @@ const Dictionary = () => {
           value={word}
         />
         <div className="flex justify-center">
-          <button className="px-6 py-2 mb-6 font-semibold text-sm uppercase tracking-wider bg-gradient-to-r from-purple-600 to-purple-800 rounded-full shadow-lg hover:shadow-purple-500/20 hover:-translate-y-0.5 transition-all duration-300">
+          <button
+            onClick={handleSearch}
+            className="cursor-pointer px-6 py-2 mb-6 font-semibold text-sm uppercase tracking-wider bg-gradient-to-r from-purple-600 to-purple-800 rounded-full shadow-lg hover:shadow-purple-500/20 hover:-translate-y-0.5 transition-all duration-300"
+          >
             Search
           </button>
         </div>
